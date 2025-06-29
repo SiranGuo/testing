@@ -1,74 +1,75 @@
-import express from "express"
-import { config } from "dotenv"
-import mongoose from "mongoose"
-import cors from "cors"
-import { v2 as cloudinary } from "cloudinary"
-import multer from "multer"
-import { CloudinaryStorage } from "multer-storage-cloudinary"
-import productRoute from "./routes/productRoute.js"
-import stripeRoute from "./routes/stripeRoute.js"
-import subscriberRoute from "./routes/subscriberRoute.js"
-import { authRouter } from "./controllers/authController.js";
+import dotenv from 'dotenv';
+dotenv.config();
+import express, { json } from 'express';
+import cors from 'cors';
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { DynamoDBDocumentClient, GetCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
 
-
-config();
 
 const app = express();
 
+app.use(cors({
+}));
 
-app.use(cors());
+app.use(json());
+console.log('Allowing CORS for origin:', process.env.FRONTEND_URL);
+const dynomodbClient = new DynamoDBClient ({ 
+  region : process.env.AWS_REGION,
+  credentials : {
+    accessKeyId: process.env.MY_AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.MY_AWS_SECRET_ACCESS_KEY
+  }
+ });
+const docClient = DynamoDBDocumentClient.from(dynomodbClient);
 
+const getPublicImageUrl = (s3Url) => {
 
-app.listen(process.env.PORT, () => console.log(`Server running on ${process.env.PORT} PORT`));
+  const bucketName = 'itemshowcase';
+  const region = 'us-west-1';
 
-mongoose
-    .connect(process.env.mongoDb)
-    .then(() => console.log('Database is connected'))
-    .catch((error) => console.log(error));
+  let path = s3Url.replace(`s3://${bucketName}/`, '');
 
-app.use(express.json());
+  const bucketPrefix = `${bucketName}/`;
+  if (path.startsWith(bucketPrefix)) {
+    path = path.slice(bucketPrefix.length);
+  }
 
-app.use('/product', productRoute);
+  return `https://${bucketName}.s3.${region}.amazonaws.com/${path}`;
+};
 
-cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET
+app.get('/api/products/:id', async (req, res) => {
+  const id = req.params.id;
+  
+  try {
+    const { Item } = await docClient.send(new GetCommand({
+      TableName: process.env.TABLE_NAME,
+      Key: { id }   // partition key
+    }));
+    if (!Item) return res.status(404).send('Product not found');
+    Item.slides = Item.slides?.map(getPublicImageUrl) ?? [];
+    Item.imageURL = getPublicImageUrl(Item.imageURL);
+    
+    res.json(Item);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
+  }
 });
 
-app.use((req, res, next) => {
-    req.cloudinary = cloudinary;
-    next();
+app.get('/api/products', async (req, res) => {
+  try {
+    const data = await docClient.send(new ScanCommand({ TableName: process.env.TABLE_NAME }));
+    const products = data.Items.map(item => ({
+      ...item,
+      imageURL: getPublicImageUrl(item.imageURL),
+    }));
+    res.json(products);
+  } catch (err) {
+    console.error('DynamoDB error:', err);
+    res.status(500).json({ error: 'Failed to fetch products' });
+  }
 });
 
-const storage = new CloudinaryStorage({
-    cloudinary: cloudinary,
-    params: {
-        folder: 'images',
-        allowedFormats: ['jpeg', 'png', 'jpg'],
-    }
-});
 
-const parser = multer({ storage: storage });
 
-//ROUTE FOR UPLOADING THE FILE TO CLOUDINARY
-app.post('/upload-image', parser.single('file'), (req, res) => {
-    if (!req.file) {
-        return res.status(400).send('No file uploaded.');
-    }
-
-    try {
-        if (!req.file.path) {
-            throw new Error('File uploaded, but no path available');
-        }
-
-        res.json({ secure_url: req.file.path });
-    } catch (error) {
-        console.error('Error during file upload: ', error);
-        res.status(500).send('Internal server error');
-    }
-});
-
-app.use('/stripe', stripeRoute)
-app.use('/subscriber', subscriberRoute)
-app.use('/auth', authRouter);
+app.listen(process.env.PORT, () => console.log(`Listening on port ${process.env.PORT}`));

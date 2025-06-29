@@ -1,0 +1,185 @@
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    padding: 16px;
+  }
+
+  @media (max-width: 768px) {
+    .gallery {
+      grid-template-columns: repeat(2, 1fr); 
+    }
+  }
+  
+  .card {
+    text-align: center;
+    transition: box-shawdow 0.2s;
+  }
+  
+  .square {
+  width: 100%;
+  aspect-ratio: 3/4;
+  display: flex;
+  background-color: #7a7777;
+  border: 1px solid #ccc;
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  }
+
+  .name {
+    margin-top: 8px;
+    text-align: left;
+    font-size: 0.9rem;
+    color: #f10000;
+    font-weight: bold;
+  }
+
+  .description {
+    margin: 8px 0;
+    text-align: left;
+    font-size: 1rem;
+    color: #000000;
+    font-weight: bold;
+  }
+  
+  .price {
+    margin-top: 8px;
+    text-align: left;
+    font-size: 1rem;
+    color: #333;
+    font-weight: bold
+  }
+
+  /* card link styles */
+  .card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .card:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  /* navbar styles */
+  .navbar {
+    height : 60px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background: #fff;
+    padding: 0 20px;
+  }
+  
+  .nav-links {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 20;
+    gap: 40px;
+  }
+  
+  .nav-links a {
+    color: #f10000;
+    padding: 20px;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .nav-links a:hover {
+    height: 70px;
+    background: #c0b2b2;
+  }
+  
+  .logo {
+    margin-left: none;
+  }
+  
+  .logo a {
+    color: #ff0000;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-decoration: none;
+  }
+  
+  /* Mobile styles */
+  .mobile-toggle {
+    display: none;
+    margin-left: auto;
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    color: #ff0000;
+  }
+  @media (max-width: 768px) {
+    .nav-links {
+      position: fixed;
+      top: 35px;
+      right: -400px; /* Start hidden off-screen */
+      width: 200px;
+      height: 100%;
+      flex-direction: column;
+      background: #ffffff;
+      transform: translae(0);
+      transition: transform 0.3s ease-in-out;
+      z-index: 999;
+    }
+
+    .nav-links.open {
+      transform: translateX(-400px);  /* Slide it fully into view */
+    } 
+    .nav-links.open {
+      display: flex;
+    }
+    .mobile-toggle {
+      position: relative;
+      display: block;
+      z-index: 1000;
+    }
+  }
+
+  /* slides styling */ 
+
+  .react-slideshow-container {
+    width: 100%;
+    height: 600px;
+    overflow: hidden;
+    margin-top: 30px;
+    object-fit: cover;
+  }
+
+  .slideshow-wrapper {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .slideshow-wrapper .each-slide,
+  .slideshow-wrapper .each-slide img {
+    width: 100%;
+    height: 600px;
+  } 
+
+  .slideshow-wrapper .each-slide img {
+    object-fit: contain;
+    object-position: center;
+    display: block;
+  }
+
+
+.product-extra-description {
+  white-space: pre-wrap; /* Preserve line breaks */
+}
+
+.product-extra-description ul {
+  list-style-type: disc; /* Use bullet points */
+  padding-left: 20px; /* Indent list items */
+}
+
+.product-extra-description p {
+  margin: 0; /* Remove default margin for paragraphs */
+}

@@ -1,60 +1,40 @@
-import React from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
-import ProtectedRoute from "./components/ProtectedRoutes";
-import Admin from "./pages/Admin";
-import EditProduct from "./pages/EditProduct";
-import DeleteProduct from "./pages/DeleteProduct";
-import CreateProduct from "./pages/CreateProduct";
-import Home from "./pages/Home";
-import Navbar from "./components/Navbar";
-import Cart from "./pages/Cart";
-import Success from "./pages/Success";
-import Cancel from "./pages/Cancel";
-import Shop from "./pages/Shop";
-import Footer from "./components/Footer";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import AdminNavbar from "./components/AdminNavbar";
+import Gallery from './Gallery';
+import Navbar from './Navbar';
+import ProductDetails from './ProductDetails.jsx';
+import bg from './images/background.jpg';
+import { BrowserRouter, Routes, Route, Outlet, Navigate} from 'react-router-dom';
+import CategoryPage from './CategoryPage.jsx';
 
-function App() {
-  const location = useLocation();
-  const isAdminRoute = location.pathname.startsWith('/admin');
-
+function ProductsLayout() {
   return (
     <>
-    {isAdminRoute ? <AdminNavbar/> : <Navbar/> }
-    
-    <Routes>
-      <Route path="/" element={<Home/>} />
-      <Route path="/cart" element={<Cart/>} />
-      <Route path="/shop" element={<Shop/>} />
-      <Route path="/login" element={<Login/>} />
-      <Route path="/register" element={<Register/>} />
-      <Route path="/success" element={<Success/>} />
-      <Route path="/cancel" element={<Cancel/>} />
-      <Route
-        path="/admin/*"
-        element={
-          <ProtectedRoute>
-            <AdminRoutes/>
-          </ProtectedRoute>
-        }
-      />
-      </Routes>
-      {isAdminRoute ? '' : <Footer/> }
+      <Outlet /> {/* renders either Gallery or ProductDetails */}
     </>
-  )
+  );
 }
 
-const AdminRoutes = () => {
-  return (
-    <Routes>
-      <Route path="/" element={<Admin/>} />
-      <Route path="/product/create" element={<CreateProduct/>} />
-      <Route path="/product/edit/:id" element={<EditProduct/>} />
-      <Route path="/product/delete/:id" element={<DeleteProduct/>} />
-    </Routes>
-  );
-};
+function App() {
+  const containerStyle = {
+    backgroundImage: `url(${bg})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    minHeight: '100vh', // ensures full-height background even if gallery is shorter
+  };
 
-export default App
+return (
+  <div style={containerStyle}>
+    <Navbar />
+    <Routes>
+      <Route path="/" element={<Navigate to="/products" replace />} />
+      <Route path="/category/:name" element={<CategoryPage />} />
+      <Route path="/products/*" element={<ProductsLayout />}>
+        <Route index element={<Gallery />} />
+        <Route path=":id" element={<ProductDetails />} />
+      </Route>
+    </Routes>
+  </div>
+);
+}
+
+export default App;
+
