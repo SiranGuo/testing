@@ -3,6 +3,20 @@ import { Slide } from 'react-slideshow-image';
 import { useParams } from 'react-router-dom';
 import 'react-slideshow-image/dist/styles.css';
 
+function renderBoldText(line) {
+  const parts = [];
+  const regex = /\*\*(.*?)\*\*/g;
+  let lastIndex = 0, match, key = 0;
+
+  while ((match = regex.exec(line)) !== null) {
+    parts.push(line.slice(lastIndex, match.index));
+    parts.push(<strong key={key++}>{match[1]}</strong>);
+    lastIndex = regex.lastIndex;
+  }
+  parts.push(line.slice(lastIndex));
+  return parts;
+}
+
 
 export default function ProductDetails() {
   const { id } = useParams();
@@ -13,7 +27,7 @@ export default function ProductDetails() {
   useEffect(() => {
     async function fetchProduct() {
       try {
-        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/products/${id}`);
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/products/${id}`);
         if (!res.ok) throw new Error(res.statusText);
         const data = await res.json();
         console.log('Slides for product:', data.slides);
@@ -60,7 +74,7 @@ export default function ProductDetails() {
         <p>{product.description}</p>
         <p className="price">{product.price}</p>
       </div>
-            <div className="product-extra-description">
+      <div className="product-extra-description">
         {details
           .split(/\r?\n/)
           .filter(Boolean) // removes empty lines, optional
@@ -68,11 +82,11 @@ export default function ProductDetails() {
             if (line.startsWith('- ')) {
               return (
                 <ul key={i}>
-                  <li>{line.slice(2)}</li>
+                  <li>{renderBoldText(line.slice(2))}</li>
                 </ul>
               );
             }
-            return <p key={i}>{line}</p>;
+            return <p key={i}>{renderBoldText(line)}</p>;
         })}
       </div>
     </div>

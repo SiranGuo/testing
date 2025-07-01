@@ -37,7 +37,7 @@ const getPublicImageUrl = (s3Url) => {
   return `https://${bucketName}.s3.${region}.amazonaws.com/${path}`;
 };
 
-app.get('/api/products/:id', async (req, res) => {
+app.get('/products/:id', async (req, res) => {
   const id = req.params.id;
   
   try {
@@ -58,7 +58,8 @@ app.get('/api/products/:id', async (req, res) => {
 
 app.get('/api/products', async (req, res) => {
   try {
-    const data = await docClient.send(new ScanCommand({ TableName: process.env.TABLE_NAME }));
+    const data = await docClient.send(new ScanCommand({ 
+      TableName: process.env.TABLE_NAME }));
     const products = data.Items.map(item => ({
       ...item,
       imageURL: getPublicImageUrl(item.imageURL),
@@ -70,6 +71,30 @@ app.get('/api/products', async (req, res) => {
   }
 });
 
+app.get('/category/:category', async (req, res) => {
+  const category = decodeURIComponent(req.params.category); // 🟢 Correct extraction
+
+  try {
+    const data = await docClient.send(new ScanCommand({
+      TableName: process.env.TABLE_NAME,
+      Indexname: 'category-index',
+      FilterExpression: "#c = :cat",
+      ExpressionAttributeNames: { "#c": "category" },
+      ExpressionAttributeValues: { ":cat": category }
+    }));
+    
+    const products = data.Items.map(item => ({
+      ...item,
+      imageURL: getPublicImageUrl(item.imageURL),
+    }));
+    
+    console.log('Category:', category);
+    res.json(products);
+  } catch (err) {
+    console.error("Scan-by-category error:", err);
+    res.status(500).json({ error: "Failed to fetch products by category" });
+  }
+});
 
 
 app.listen(process.env.PORT, () => console.log(`Listening on port ${process.env.PORT}`));

@@ -27,7 +27,7 @@ export default function Navbar() {
       <ul className={`nav-links ${open ? 'open' : ''}`}>
         {categories.map(cat => (
           <li key={cat}>
-            <Link to={`/category/${cat.toLowerCase()}`} onClick={handleLinkClick}>
+            <Link to={`/category/${encodeURIComponent(cat)}`} onClick={handleLinkClick}>
               {cat}
             </Link>
           </li>

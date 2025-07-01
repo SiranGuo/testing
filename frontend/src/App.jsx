@@ -2,16 +2,9 @@ import Gallery from './Gallery';
 import Navbar from './Navbar';
 import ProductDetails from './ProductDetails.jsx';
 import bg from './images/background.jpg';
-import { BrowserRouter, Routes, Route, Outlet, Navigate} from 'react-router-dom';
 import CategoryPage from './CategoryPage.jsx';
+import {  Routes, Route, Outlet, Navigate} from 'react-router-dom';
 
-function ProductsLayout() {
-  return (
-    <>
-      <Outlet /> {/* renders either Gallery or ProductDetails */}
-    </>
-  );
-}
 
 function App() {
   const containerStyle = {
@@ -25,13 +18,11 @@ return (
   <div style={containerStyle}>
     <Navbar />
     <Routes>
-      <Route path="/" element={<Navigate to="/products" replace />} />
-      <Route path="/category/:name" element={<CategoryPage />} />
-      <Route path="/products/*" element={<ProductsLayout />}>
-        <Route index element={<Gallery />} />
-        <Route path=":id" element={<ProductDetails />} />
-      </Route>
+      <Route path="/products/:id" element={<ProductDetails />} />
+      <Route path="/category/:category" element={<CategoryPage />} />
+      <Route path="/*" element={<Gallery />}> </Route>
     </Routes>
+    
   </div>
 );
 }

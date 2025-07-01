@@ -3,7 +3,7 @@ import './Gallery.css';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useMemo }   from 'react';
-
+import { useSearchParams } from 'react-router-dom';
 
 
 export default function Gallery() {
@@ -11,6 +11,7 @@ export default function Gallery() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [searchParams , setSearchParams] = useSearchParams();
   const sortItemsId = useMemo (() => {
     return items.sort((a, b) => a.id - b.id); 
   } , [items]);

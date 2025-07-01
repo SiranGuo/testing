@@ -1,4 +1,4 @@
-export const categories = ['花知晓', '方里', '橘朵', '花洛莉亚','INTOYOU','彩棠','珀莱雅' ];
+export const categories = ['眼影', '腮红', '提亮/修容', '化妆刷','染眉膏','眼线笔','眉笔','口红','粉扑' ];
 
 
 export default categories;
