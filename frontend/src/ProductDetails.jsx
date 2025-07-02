@@ -1,3 +1,4 @@
+import './Gallery.css';
 import React, { useState, useEffect } from 'react';
 import { Slide } from 'react-slideshow-image';
 import { useParams } from 'react-router-dom';
@@ -69,25 +70,32 @@ export default function ProductDetails() {
         </Slide>
       </div>
 
-      <div className="product-info">
-        <h2>{product.name}</h2>
-        <p>{product.description}</p>
-        <p className="price">{product.price}</p>
+      <div className="product-container">
+        <div className="product-info">
+          <h2>{product.name}</h2>
+          <p>{product.description}</p>
+          <p className="price">{product.price}</p>
+        </div>
+
+        <div className="product-details-header">DETAILS</div>
+
+        <div className="product-extra-description">
+          {details
+            .split(/\r?\n/)
+            .filter(Boolean)
+            .map((line, i) =>
+              line.startsWith('- ') ? (
+                <ul key={i}><li>{renderBoldText(line.slice(2))}</li></ul>
+              ) : (
+                <p key={i}>{renderBoldText(line)}</p>
+              )
+            )}
+        </div>
       </div>
-      <div className="product-extra-description">
-        {details
-          .split(/\r?\n/)
-          .filter(Boolean) // removes empty lines, optional
-          .map((line, i) => {
-            if (line.startsWith('- ')) {
-              return (
-                <ul key={i}>
-                  <li>{renderBoldText(line.slice(2))}</li>
-                </ul>
-              );
-            }
-            return <p key={i}>{renderBoldText(line)}</p>;
-        })}
+      <div className = "contact-us">
+          我立志想成为一名优秀的倒货狗。
+          只卖真货， 如有疑问，问官方，别找我。
+          联系方式：vx: 1234567890
       </div>
     </div>
     

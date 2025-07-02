@@ -1,13 +1,20 @@
   .gallery {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-    padding: 16px;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px 45px;
+    padding: 50px;
+    margin-left: 50px;
+    margin-right: 50px;
+    max-width: 100%;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 900px) {
     .gallery {
-      grid-template-columns: repeat(2, 1fr); 
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      padding: 16px;
+      margin-left: 5px;
+      margin-right: 5px;
     }
   }
   
@@ -28,10 +35,15 @@
   background-repeat: no-repeat;
   }
 
+  .card-link:hover .square {
+    transform: scale(1.05);
+    filter: grayscale(0%);
+  }
+
   .name {
     margin-top: 8px;
     text-align: left;
-    font-size: 0.9rem;
+    font-size: 1rem;
     color: #000000;
     font-weight: bold;
   }
@@ -45,10 +57,9 @@
   }
   
   .price {
-    margin-top: 8px;
     text-align: left;
     font-size: 1rem;
-    color: #333;
+    color: #000000;
     font-weight: bold
   }
 
@@ -113,7 +124,7 @@
     border: none;
     color: #ff0000;
   }
-  @media (max-width: 768px) {
+  @media (max-width: 1000px) {
     .nav-links {
       position: fixed;
       top: 35px;
@@ -182,4 +193,76 @@
 
 .product-extra-description p {
   margin: 0; /* Remove default margin for paragraphs */
+}
+
+.product-container {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+.product-info {
+  border-bottom: 2px solid #56c6fa;
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+}
+
+.product-info h2 {
+  font-size: 2rem;
+  margin-bottom: 12px;
+  color: #222;
+}
+
+.product-info p {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #000000;
+}
+
+.product-info .price {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #020202;
+  margin-top: 16px;
+}
+
+.product-details-header {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 32px 0 16px;
+  color: #333;
+  position: relative;
+}
+.product-details-header::after {
+  content: '';
+  display: block;
+  width: 50px;
+  height: 4px;
+  background: #56c6fa;
+  margin-top: 8px;
+}
+
+.product-extra-description p {
+  margin: 12px 0;
+  font-size: 1rem;
+  color: #444;
+}
+
+.product-extra-description ul {
+  margin: 12px 0 12px 20px;
+  list-style: disc;
+}
+
+.product-extra-description li {
+  margin: 8px 0;
+}
+
+.contact-us {
+  margin-top: 40px;
+  font-size: 1.2rem;
+  color: #333;
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 20px;
 }
