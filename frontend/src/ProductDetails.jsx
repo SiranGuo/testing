@@ -25,8 +25,16 @@ export default function ProductDetails() {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
+  const [ isAdded, setIsAdded] = useState(false);
   const { addToCart } = useCart();
-
+  const handleAdd = () => {
+    setIsAdded(true)
+    addToCart(product);
+    
+    setTimeout(() => {
+      setIsAdded(false);
+    }, 2000);
+  };
   useEffect(() => {
     async function fetchProduct() {
       try {
@@ -78,7 +86,12 @@ export default function ProductDetails() {
           <p>{product.description}</p>
           <div className="product-line">
             <p className="price">{product.price}</p>
-            <button className="add-to-cart" onClick={() => addToCart(product)}>Add to Cart</button>
+            <button 
+              className={`add-to-cart ${isAdded ? 'added' : ''}`} 
+              onClick={handleAdd}
+              disabled = {isAdded}>
+              {isAdded ? 'Added' : 'Add to Cart'}
+            </button>
           </div>
         </div>
 
