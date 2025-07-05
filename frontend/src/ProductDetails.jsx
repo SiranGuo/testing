@@ -1,8 +1,9 @@
 import './Gallery.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext} from 'react';
 import { Slide } from 'react-slideshow-image';
 import { useParams } from 'react-router-dom';
 import 'react-slideshow-image/dist/styles.css';
+import { useCart } from './CartContext';
 
 function renderBoldText(line) {
   const parts = [];
@@ -24,6 +25,7 @@ export default function ProductDetails() {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
+  const { addToCart } = useCart();
 
   useEffect(() => {
     async function fetchProduct() {
@@ -74,7 +76,10 @@ export default function ProductDetails() {
         <div className="product-info">
           <h2>{product.name}</h2>
           <p>{product.description}</p>
-          <p className="price">{product.price}</p>
+          <div className="product-line">
+            <p className="price">{product.price}</p>
+            <button className="add-to-cart" onClick={() => addToCart(product)}>Add to Cart</button>
+          </div>
         </div>
 
         <div className="product-details-header">DETAILS</div>
@@ -91,11 +96,6 @@ export default function ProductDetails() {
               )
             )}
         </div>
-      </div>
-      <div className = "contact-us">
-          我立志想成为一名优秀的倒货狗。
-          只卖真货， 如有疑问，问官方，别找我。
-          联系方式：vx: 1234567890
       </div>
     </div>
     

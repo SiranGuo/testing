@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import categories from './data/categories';
+import { FaShoppingCart } from 'react-icons/fa'; 
 
 
 export default function Navbar() {
@@ -15,15 +16,7 @@ export default function Navbar() {
       <div className="logo">
         <Link to="/">全部产品</Link>
       </div>
-
-      <button
-        className="mobile-toggle"
-        onClick={() => setOpen(prev => !prev)}
-        aria-label="Toggle menu"
-      >
-        ☰
-      </button>
-
+      
       <ul className={`nav-links ${open ? 'open' : ''}`}>
         {categories.map(cat => (
           <li key={cat}>
@@ -33,6 +26,20 @@ export default function Navbar() {
           </li>
         ))}
       </ul>
+
+      <button className="shopping-cart">
+        <Link to="/ShoppingCart" onClick={handleLinkClick}>
+          <FaShoppingCart size={24} />
+        </Link>
+      </button>
+
+      <button
+        className="mobile-toggle"
+        onClick={() => setOpen(prev => !prev)}
+        aria-label="Toggle menu"
+      >
+        ☰
+      </button>
     </nav>
   );
 }

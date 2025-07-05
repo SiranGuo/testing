@@ -3,6 +3,7 @@ import Navbar from './Navbar';
 import ProductDetails from './ProductDetails.jsx';
 import bg from './images/background.jpg';
 import CategoryPage from './CategoryPage.jsx';
+import ShoppingCart from './ShoppingCart.jsx';
 import {  Routes, Route, Outlet, Navigate} from 'react-router-dom';
 
 
@@ -21,6 +22,7 @@ return (
       <Route path="/products/:id" element={<ProductDetails />} />
       <Route path="/category/:category" element={<CategoryPage />} />
       <Route path="/*" element={<Gallery />}> </Route>
+      <Route path="/ShoppingCart" element={<ShoppingCart />} />
     </Routes>
     
   </div>
