@@ -41,6 +41,7 @@ export default function ShoppingCart() {
           </ul>
         )
       }
+      <p className = "contact-info"> 📩 下单请加微信：BYESEEbaixi</p>
     </div>
   );
 }
