@@ -61,7 +61,6 @@ export default function Gallery() {
 
   return (
     <div>
-      <h1 className = 'category-header'>全部产品</h1>
       <div className="gallery">
         {items.sort((a, b) => a.id - b.id).map(item => (
           <Link to={`/products/${item.id}`} key={item.id} className="card-link">
