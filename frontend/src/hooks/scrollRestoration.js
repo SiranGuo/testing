@@ -11,6 +11,7 @@ export function useScrollRestoration() {
     
     // Set restoration flag to prevent saving during restore
     isRestoringRef.current = true;
+    
 
     // Restore scroll position
     try {
@@ -24,7 +25,7 @@ export function useScrollRestoration() {
           setTimeout(() => {
             isRestoringRef.current = false;
           }, 100);
-        }, 200);
+        }, 500); 
       } else {
         window.scrollTo(0, 0);
         // Allow saving immediately for new pages
