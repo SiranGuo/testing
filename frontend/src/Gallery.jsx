@@ -78,10 +78,7 @@ export default function Gallery() {
                     : {}
                 }
               />
-              <div>
-                <div className="name">{item.name}</div>
-                <button className="add-to-cart-button"><FaShoppingCart/></button>
-              </div>
+              <div className="name">{item.name}</div>
               <div className="description">{item.description}</div>
               <div className="price">{item.price}</div>
             </div>
