@@ -25,18 +25,31 @@
     text-align: center;
     transition: box-shawdow 0.2s;
   }
+
+  .card .square {
+    background-color: white;
+    display: flex;
+    justify-content: center;  /* horizontal centering */
+    align-items: center;      /* vertical centering */
+  }
+  .card .front-page-text {
+    font-weight: bold;
+    text-align: center;
+  }
   
   .square {
   width: 100%;
   aspect-ratio: 3/4;
   display: flex;
-  background-color: #7a7777;
+  background-color: #ffffff;
   border: 1px solid #ccc;
 
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   }
+
+
 
   .name {
     margin-top: 8px;
@@ -441,4 +454,10 @@
   .contact-info {
     text-align: center;
     font-weight: bold;
+  }
+
+  .category-header {
+    text-align : center;
+    font-size: 2rem;
+    font-style: bold;
   }

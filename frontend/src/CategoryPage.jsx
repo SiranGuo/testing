@@ -3,7 +3,7 @@ import { useState, useEffect, useMemo} from 'react';
 import { Link } from 'react-router-dom';
 
 export default function CategoryPage() {
-  const { category } = useParams(); // e.g. "electronics"
+  const { category } = useParams(); 
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -37,32 +37,35 @@ export default function CategoryPage() {
   if (!items.length) return <p>No products found in “{category}”.</p>;
 
   return (
-    
-    <div className="gallery">
-      {sortItemsId.map(item => (
-        <Link
-          to={`/products/${item.id}`}
-          key={item.id}
-          className="card-link"
-        >
-          <div className="card">
-            <div
-              className="square"
-              style={
-              item.imageURL
-                ? { 
-                  backgroundImage: `url(${item.imageURL})`, 
-                  backgroundSize: 'cover', 
-                  backgroundPosition: 'center' }
-                : {}
-              }
-            />
-            <div className="name">{item.name}</div>
-            <div className="description">{item.description}</div>
-            <div className="price">{item.price}</div>
-          </div>
-        </Link>
-      ))}
+  
+    <div >
+      <h1 className = 'category-header'>{category}</h1>
+      <div className="gallery">
+        {sortItemsId.map(item => (
+          <Link
+            to={`/products/${item.id}`}
+            key={item.id}
+            className="card-link"
+          >
+            <div className="card">
+              <div
+                className="square"
+                style={
+                item.imageURL
+                  ? { 
+                    backgroundImage: `url(${item.imageURL})`, 
+                    backgroundSize: 'cover', 
+                    backgroundPosition: 'center' }
+                  : {}
+                }
+              />
+              <div className="name">{item.name}</div>
+              <div className="description">{item.description}</div>
+              <div className="price">{item.price}</div>
+            </div>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }

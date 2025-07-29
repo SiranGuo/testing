@@ -72,7 +72,7 @@ app.get('/api/products', async (req, res) => {
 });
 
 app.get('/category/:category', async (req, res) => {
-  const category = decodeURIComponent(req.params.category); // 🟢 Correct extraction
+  const category = decodeURIComponent(req.params.category);
 
   try {
     const data = await docClient.send(new ScanCommand({

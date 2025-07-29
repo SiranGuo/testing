@@ -36,6 +36,7 @@ export default function ProductDetails() {
     }, 2000);
   };
   useEffect(() => {
+    window.scrollTo(0, 0);
     async function fetchProduct() {
       try {
         const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/products/${id}`);

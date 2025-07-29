@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import usePageBottom from './usePageBottom';
+import { FaShoppingCart } from 'react-icons/fa'; 
 
 export default function Gallery() {
   const [items, setItems] = useState([]);
@@ -10,9 +11,9 @@ export default function Gallery() {
   const [error, setError] = useState(false);
   const atBottom = usePageBottom();
   
-  const [searchParams, setSearchParams] = useSearchParams();
-  const currentPage = parseInt(searchParams.get('page')) || 1;
-  const itemsPerPage = 10;
+  // const [searchParams, setSearchParams] = useSearchParams();
+  // const currentPage = parseInt(searchParams.get('page')) || 1;
+  // const itemsPerPage = 10;
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -39,28 +40,30 @@ export default function Gallery() {
   }, []);
 
 
-  const totalPages = Math.ceil(sortItemsId.length / itemsPerPage);
+  // const totalPages = Math.ceil(sortItemsId.length / itemsPerPage);
 
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = sortItemsId.slice(indexOfFirstItem, indexOfLastItem);
+  // const indexOfLastItem = currentPage * itemsPerPage;
+  // const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  // const currentItems = sortItemsId.slice(indexOfFirstItem, indexOfLastItem);
 
-  const goToPage = (page) => {
-    if (page >= 1 && page <= totalPages) {
-      setSearchParams({ page: page.toString() });
-      navigate(`${location.pathname}?page=${page}`);
-    }
-  };
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [currentPage]);
+  // const goToPage = (page) => {
+  //   if (page >= 1 && page <= totalPages) {
+  //     setSearchParams({ page: page.toString() });
+  //     navigate(`${location.pathname}?page=${page}`);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   window.scrollTo({ top: 0, behavior: 'smooth' });
+  // }, [currentPage]);
   if (loading) return <div className="loading">Loading...</div>;
   if (error) return <div className="error">Error loading products</div>;
 
   return (
     <div>
+      <h1 className = 'category-header'>全部产品</h1>
       <div className="gallery">
-        {currentItems.map(item => (
+        {items.sort((a, b) => a.id - b.id).map(item => (
           <Link to={`/products/${item.id}`} key={item.id} className="card-link">
             <div className="card">
               <div
@@ -75,14 +78,18 @@ export default function Gallery() {
                     : {}
                 }
               />
-              <div className="name">{item.name}</div>
+              <div>
+                <div className="name">{item.name}</div>
+                <button className="add-to-cart-button"><FaShoppingCart/></button>
+              </div>
               <div className="description">{item.description}</div>
               <div className="price">{item.price}</div>
             </div>
           </Link>
         ))}
+
       </div>
-      {atBottom && (
+      {/* {atBottom && (
         <div className="pagination">
           <button onClick={() => goToPage(currentPage - 1)} disabled={currentPage === 1}>
             Previous
@@ -100,7 +107,7 @@ export default function Gallery() {
             Next
           </button>
         </div>
-      )}
+      )} */}
     </div>
   );
 }
